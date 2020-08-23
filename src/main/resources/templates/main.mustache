@@ -1,0 +1,48 @@
+<html>
+<body>
+    <form action="/logout" method="post">
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+        <input type="submit" value="Sign Out"/>
+    </form>
+    <div>Save message to database</div>
+    <div>
+        <form method="post">
+            <input type="text" name="text" placeholder="Enter text">
+            <input type="text" name="tag" placeholder="Enter tag">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div>Delete by ID</div>
+    <div>
+        <form method="post" action="deleteById">
+            <input type="number" name="id" placeholder="Enter Id">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div>
+        <div>Delete all messages</div>
+        <form method="post" action="deleteAll">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <button type="submit">Delete All</button>
+        </form>
+    </div>
+    <div>Enter tag to filter messages </div>
+    <div>
+        <form method="post" action="filter">
+            <input type="text" name="filter" placeholder="Filter by text">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <button type="submit">Execute</button>
+        </form>
+    </div>
+    <div>List of messages </div>
+    {{#messages}}
+    <div>
+        <b>{{id}}</b>
+        <span>{{text}}</span>
+        <i>{{tag}}</i>
+    </div>
+    {{/messages}}
+</body>
+</html>
