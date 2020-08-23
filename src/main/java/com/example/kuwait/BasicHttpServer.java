@@ -3,6 +3,7 @@ package com.example.kuwait;
 import com.example.kuwait.domain.Message;
 import com.example.kuwait.repos.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,24 +45,25 @@ public class BasicHttpServer {
     }
 
     @PostMapping("filter")
-    public String filter(@RequestParam String filter,
+    public String filter(@RequestParam(defaultValue = "") String filter,
                          Map<String,Object> model
     ) {
         Iterable<Message> messages;
+        messages = filter == null || filter.isEmpty() ?
+                messageRepo.findAll() : messageRepo.findByTag(filter);
 
-        if(filter == null || filter.isEmpty()){
-            messages = messageRepo.findAll();
-        }
-        else{
-            messages = messageRepo.findByTag(filter);
-        }
-        model.put("messages",messages);
+        model.put("messages", messages);
         return "main";
     }
 
     @PostMapping("deleteById")
     public String deleteById(@RequestParam int id, Map<String, Object> model){
-        messageRepo.deleteById(id);
+
+        try {
+            messageRepo.deleteById(id);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         Iterable<Message> messages = messageRepo.findAll();
 
         model.put("messages", messages);
@@ -77,10 +79,5 @@ public class BasicHttpServer {
         model.put("messages", messages);
 
         return "main";
-    }
-
-    @GetMapping("login")
-    public String login() {
-        return "login";
     }
 }

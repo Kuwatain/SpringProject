@@ -16,7 +16,7 @@
     <div>Delete by ID</div>
     <div>
         <form method="post" action="deleteById">
-            <input type="number" name="id" placeholder="Enter Id">
+            <input type="number" name="id" placeholder="Enter Id" min="1">
             <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
             <button type="submit">Submit</button>
         </form>
